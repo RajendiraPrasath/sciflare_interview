@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">SMS App</string>
+    <string name="empty_error_message">Please Enter Your Message</string>
+    <string name="receiver_mobile_number">8438371393</string>
+    <string name="permission_denied_message">Permission has been denied or request cancelled</string>
+    <string name="message_hint_label">Enter Your Message Here</string>
+    <string name="button_label">Send</string>
+    <string name="encryption_mode">encryptionMode</string>
+    <string name="algorithm">algorithm</string>
+    <string name="key">key</string>
+</resources>
