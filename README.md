@@ -1,10 +1,10 @@
 I have developed encrypt & decrypt message app using Android
 
-I have used DataBinding, Scope Functions, AES Encryption & Decryption Algoritham, Room DB, MVVM Architecture Design Pattern & BroadCast Receiver
+I have used ViewBinding, Scope Functions, AES Encryption & Decryption Algoritham, Room DB, MVVM Architecture Design Pattern & BroadCast Receiver
 
 I have used Key.properties file to save AES key, Encryption Mode & Algoritham for security purpose
 
-Decrypted message show only our app, android default sms app show encrypted messages
+Decrypted messages show only our app, android default sms app show encrypted messages
 
 I have added Screenshots below
 
