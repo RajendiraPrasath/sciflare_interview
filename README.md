@@ -14,3 +14,4 @@ I have added Screenshots below
 ![Screenshot_4](https://github.com/RajendiraPrasath/sciflare_interview/assets/56393204/8218a8c7-db85-45fa-86bf-eaffaa299298)
 ![Screenshot_5](https://github.com/RajendiraPrasath/sciflare_interview/assets/56393204/e3f0d153-f981-4e20-bc5e-f45b58b92d62)
 ![Screenshot_6](https://github.com/RajendiraPrasath/sciflare_interview/assets/56393204/11366512-5462-4c53-bb13-4bf8a5706ee7)
+![Screenshot_7](https://github.com/RajendiraPrasath/sciflare_interview/assets/56393204/5b6f2ed5-1e2a-45a5-b5aa-7d373f46224f)
