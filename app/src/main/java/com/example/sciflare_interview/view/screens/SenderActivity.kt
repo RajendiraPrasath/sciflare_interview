@@ -41,7 +41,9 @@ class SenderActivity: AppCompatActivity() {
         /* Get Latest 5 sender message */
         viewModel.getLastFiveMessages(this){
             Utils.hideProgressDialog()
-            if (it.size > 0) receiverIcon.isVisible = true
+            if (it.size > 0 && this::receiverIcon.isInitialized) {
+                receiverIcon.isVisible = true
+            }
             messageAdapter.messages = it.reversed().toMutableList()
         }
 
