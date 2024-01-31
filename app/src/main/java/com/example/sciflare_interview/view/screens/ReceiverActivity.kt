@@ -26,16 +26,20 @@ class ReceiverActivity: AppCompatActivity() {
         viewModel = ViewModelProvider(this)[ReceiverViewModel::class.java]
         setMessageAdapter()
 
+        /* Get All Messages from locale database & update to Recyclerview */
         viewModel.getAllMessages(this) {
             messageAdapter.messages = it.toMutableList()
         }
     }
+
+    /* Set Message List Adapter */
     private fun setMessageAdapter(){
         messageAdapter = MessageAdapter(this)
         receiverScreenBinding.recyclerView.layoutManager = LinearLayoutManager(this)
         receiverScreenBinding.recyclerView.adapter = messageAdapter
     }
 
+    /* Set Back Arrow of Tool Bar */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId === R.id.home) {
             finish()

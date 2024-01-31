@@ -37,13 +37,15 @@ class SenderActivity: AppCompatActivity() {
         viewModel = ViewModelProvider(this)[SenderViewModel::class.java]
         setMessageAdapter()
         Utils.progressAlertDialog = Utils.createProgressDialog(this)
+
+        /* Get Latest 5 sender message */
         viewModel.getLastFiveMessages(this){
             Utils.hideProgressDialog()
-            if (it.size > 0)
-            receiverIcon.isVisible = true
+            if (it.size > 0) receiverIcon.isVisible = true
             messageAdapter.messages = it.reversed().toMutableList()
         }
 
+        /* Send Button Click Action*/
         senderScreenBinding.button.setOnClickListener {
             if (senderScreenBinding.editText.text.toString().isNotEmpty()) {
                 requestSmsPermission()
@@ -53,12 +55,14 @@ class SenderActivity: AppCompatActivity() {
         }
     }
 
+    /* Set Message Adapter */
     private fun setMessageAdapter(){
         messageAdapter = MessageAdapter(this)
         senderScreenBinding.recyclerView.layoutManager = LinearLayoutManager(this)
         senderScreenBinding.recyclerView.adapter = messageAdapter
     }
 
+    /* Ask Runtime Permissions for end User */
     private fun requestSmsPermission() {
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -77,6 +81,7 @@ class SenderActivity: AppCompatActivity() {
         }
     }
 
+    /* Get Runtime Permission Result */
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -95,6 +100,7 @@ class SenderActivity: AppCompatActivity() {
         }
     }
 
+    /* Get current device mobile number, Encrypt sender message & SMS send to the current device mobile number  */
     private fun getDevicePhoneNumber(){
         val telephonyManager = getSystemService(TELEPHONY_SERVICE) as TelephonyManager
         if (ActivityCompat.checkSelfPermission(
@@ -108,16 +114,18 @@ class SenderActivity: AppCompatActivity() {
         viewModel.messageEncrypt(senderScreenBinding.editText.text.toString(),applicationContext,telephonyManager.line1Number)
     }
 
-
+    /* Open Receiver Screen */
     private fun callReceiverActivity(){
         startActivity(Intent(applicationContext, ReceiverActivity::class.java))
     }
 
+    /* Create Receiver Menu Icon */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main,menu)
         return super.onCreateOptionsMenu(menu)
     }
 
+    /* Handled Menu icon click */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             R.id.receiver -> {
@@ -128,6 +136,7 @@ class SenderActivity: AppCompatActivity() {
         }
     }
 
+    /* Disable the menu icon upon the initial opening of the app */
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         menu?.let {
             receiverIcon = menu.findItem(R.id.receiver)

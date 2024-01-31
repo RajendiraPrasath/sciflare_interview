@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class SMSBroadcastReceiver : BroadcastReceiver() {
 
+    /* Upon receiving an income message, the message is saved to the local database */
     override fun onReceive(context: Context?, intent: Intent) {
         if (intent.action.equals( SMS_RECEIVED)) {
             val bundle = intent.extras

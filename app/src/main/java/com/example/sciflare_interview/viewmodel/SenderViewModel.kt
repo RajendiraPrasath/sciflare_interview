@@ -15,6 +15,8 @@ import kotlinx.coroutines.launch
 typealias GetLastFiveMessageUpdate = (messageList: MutableList<Message>) -> Unit
 
 class SenderViewModel: ViewModel() {
+
+    /* Encrypt to Sender Message */
     fun messageEncrypt(senderMessage: String,context: Context, senderNumber: String){
         val encryptMessage = Utils.encryptAES(senderMessage, getGradleProperty(context, context.resources.getString(R.string.key)),context)
         encryptMessage?.let {
@@ -24,6 +26,7 @@ class SenderViewModel: ViewModel() {
         }
     }
 
+    /* Send SMS to Current Device Mobile Number */
     private fun sendSms(message: String,context: Context,senderNumber: String){
         val smsManager: SmsManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             context.getSystemService(SmsManager::class.java)
@@ -33,6 +36,7 @@ class SenderViewModel: ViewModel() {
         smsManager.sendTextMessage(senderNumber, null, message, null, null)
     }
 
+    /* Get Last 5 messages from locale DB */
     fun getLastFiveMessages(context: Context, getLastFiveMessageUpdate: GetLastFiveMessageUpdate){
         val messageDao by lazy { MessageDataBase.getDatabase(context).messageDao() }
         viewModelScope.launch {

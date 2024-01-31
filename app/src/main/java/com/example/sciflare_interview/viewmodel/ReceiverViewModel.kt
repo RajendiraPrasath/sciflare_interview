@@ -10,6 +10,8 @@ import kotlinx.coroutines.launch
 typealias OnMessageUpdate = (messageList: MutableList<Message>) -> Unit
 
 class ReceiverViewModel: ViewModel() {
+
+    /* Get all messages from locale DB */
     fun getAllMessages(context: Context, onMessageUpdate: OnMessageUpdate){
         val messageDao by lazy { MessageDataBase.getDatabase(context).messageDao() }
         viewModelScope.launch {
