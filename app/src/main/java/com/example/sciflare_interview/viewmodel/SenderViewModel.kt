@@ -3,6 +3,7 @@ package com.example.sciflare_interview.viewmodel
 import android.content.Context
 import android.os.Build
 import android.telephony.SmsManager
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sciflare_interview.R
@@ -28,12 +29,18 @@ class SenderViewModel: ViewModel() {
 
     /* Send SMS to Current Device Mobile Number */
     private fun sendSms(message: String,context: Context,senderNumber: String){
-        val smsManager: SmsManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            context.getSystemService(SmsManager::class.java)
-        } else {
-            SmsManager.getDefault()
+        try {
+            val smsManager: SmsManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                context.getSystemService(SmsManager::class.java)
+            } else {
+                SmsManager.getDefault()
+            }
+            smsManager.sendTextMessage(senderNumber, null, message, null, null)
+        } catch (e: Exception){
+            Utils.hideProgressDialog()
+            Toast.makeText(context,context.resources.getString(R.string.permission_denied_message),
+                Toast.LENGTH_SHORT).show()
         }
-        smsManager.sendTextMessage(senderNumber, null, message, null, null)
     }
 
     /* Get Last 5 messages from locale DB */
