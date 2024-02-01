@@ -12,12 +12,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sciflare_interview.R
 import com.example.sciflare_interview.databinding.SenderScreenBinding
 import com.example.sciflare_interview.model.utills.Utils
 import com.example.sciflare_interview.view.adapter.MessageAdapter
 import com.example.sciflare_interview.viewmodel.SenderViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class SenderActivity: AppCompatActivity() {
@@ -27,6 +31,7 @@ class SenderActivity: AppCompatActivity() {
     private lateinit var viewModel: SenderViewModel
     private lateinit var messageAdapter: MessageAdapter
     private lateinit var receiverIcon: MenuItem
+    private var enableReceiverIcon = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +46,9 @@ class SenderActivity: AppCompatActivity() {
         /* Get Latest 5 sender message */
         viewModel.getLastFiveMessages(this){
             Utils.hideProgressDialog()
-            if (it.size > 0 && this::receiverIcon.isInitialized) {
-                receiverIcon.isVisible = true
+            if (it.size > 0) {
+                enableReceiverIcon = true
+                setReceiverIconVisibility()
             }
             messageAdapter.messages = it.reversed().toMutableList()
         }
@@ -105,15 +111,23 @@ class SenderActivity: AppCompatActivity() {
     /* Get current device mobile number, Encrypt sender message & SMS send to the current device mobile number  */
     private fun getDevicePhoneNumber(){
         val telephonyManager = getSystemService(TELEPHONY_SERVICE) as TelephonyManager
-        if (ActivityCompat.checkSelfPermission(
-                this,
+        if (ContextCompat.checkSelfPermission(
+                applicationContext,
                 Manifest.permission.READ_PHONE_STATE
-            ) != PackageManager.PERMISSION_GRANTED
+            ) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+                applicationContext,
+                Manifest.permission.READ_CONTACTS
+            ) == PackageManager.PERMISSION_GRANTED
         ) {
-            return
+            Utils.displayProgressDialog()
+            viewModel.messageEncrypt(senderScreenBinding.editText.text.toString(),applicationContext,telephonyManager.line1Number)
+        } else {
+            ActivityCompat.requestPermissions(
+                this, arrayOf(Manifest.permission.SEND_SMS,Manifest.permission.READ_SMS,Manifest.permission.RECEIVE_SMS,Manifest.permission.READ_PHONE_STATE,Manifest.permission.READ_PHONE_NUMBERS),
+                permissionSendSms
+            )
         }
-        Utils.displayProgressDialog()
-        viewModel.messageEncrypt(senderScreenBinding.editText.text.toString(),applicationContext,telephonyManager.line1Number)
+
     }
 
     /* Open Receiver Screen */
@@ -142,9 +156,17 @@ class SenderActivity: AppCompatActivity() {
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         menu?.let {
             receiverIcon = menu.findItem(R.id.receiver)
-            receiverIcon.isVisible = false
+            setReceiverIconVisibility()
         }
 
         return super.onPrepareOptionsMenu(menu)
+    }
+
+    /* Set Receiver Icon Visibility */
+    private fun setReceiverIconVisibility(){
+        lifecycleScope.launch {
+            delay(1000L)
+            receiverIcon.isVisible = enableReceiverIcon
+        }
     }
 }
