@@ -111,23 +111,18 @@ class SenderActivity: AppCompatActivity() {
     /* Get current device mobile number, Encrypt sender message & SMS send to the current device mobile number  */
     private fun getDevicePhoneNumber(){
         val telephonyManager = getSystemService(TELEPHONY_SERVICE) as TelephonyManager
-        if (ContextCompat.checkSelfPermission(
+        if (ActivityCompat.checkSelfPermission(
                 applicationContext,
                 Manifest.permission.READ_PHONE_STATE
-            ) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+            ) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
                 applicationContext,
                 Manifest.permission.READ_CONTACTS
-            ) == PackageManager.PERMISSION_GRANTED
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
-            Utils.displayProgressDialog()
-            viewModel.messageEncrypt(senderScreenBinding.editText.text.toString(),applicationContext,telephonyManager.line1Number)
-        } else {
-            ActivityCompat.requestPermissions(
-                this, arrayOf(Manifest.permission.SEND_SMS,Manifest.permission.READ_SMS,Manifest.permission.RECEIVE_SMS,Manifest.permission.READ_PHONE_STATE,Manifest.permission.READ_PHONE_NUMBERS),
-                permissionSendSms
-            )
+            return
         }
-
+        Utils.displayProgressDialog()
+        viewModel.messageEncrypt(senderScreenBinding.editText.text.toString(),applicationContext,telephonyManager.line1Number)
     }
 
     /* Open Receiver Screen */
