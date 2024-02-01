@@ -1,6 +1,6 @@
 I have developed encrypt & decrypt message app using Android
 
-I have used ViewBinding, Scope Functions, AES Encryption & Decryption Algoritham, Room DB, MVVM Architecture Design Pattern & BroadCast Receiver
+I have used ViewBinding, Scope Functions, Coroutines, AES Encryption & Decryption Algoritham, Room DB, MVVM Architecture Design Pattern & BroadCast Receiver
 
 I have used Key.properties file to save AES key, Encryption Mode & Algoritham for security purpose
 
